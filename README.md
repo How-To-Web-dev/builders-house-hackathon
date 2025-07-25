@@ -47,6 +47,7 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 - [Next.js](https://nextjs.org/docs) for landing page.
 
 - UI has to be [shadcn/ui](https://ui.shadcn.com) and [Tailwind CSS](https://tailwindcss.com/) compatible.
+- Why Tailwind? Because we are going to plugin in our own branding colors made with [tweakcn](https://tweakcn.com/)
 
 - You can use any of the following UI kits for your project:
   - [21.dev](https://21st.dev) - A collection of community-driven UI components, where you can get inspired, and also share your creations.
