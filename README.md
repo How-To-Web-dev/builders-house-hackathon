@@ -10,11 +10,9 @@ Create the digital identity for **Builders House**, by *[How to Web](https://how
 ## Features
 - User account creation via Supabase auth (check [user account creation flow](#user-account-creation-flow))
 
-- Event feed (check [Oveit API docs](./oveit-api-docs.md))
+- Event feed from Oveit or user-created events(check [Oveit API docs](./oveit-api-docs.md))
 
-- Event registration flow: user clicks on an event and is redirected to the following URL: `https://oveit.com/hub/org/jnR9vo3A`
-
-- ***User-only*** access for space booking requests (check [booking flow](#user-booking-flow)) 
+- ***User-only*** access for space booking requests (check [booking flow](#user-space-booking-flow)) 
 
 - ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow))
 
@@ -29,6 +27,10 @@ Create the digital identity for **Builders House**, by *[How to Web](https://how
   - organizer_phone
   - organizer_website_url
   - organizer_linkedin_profile_url
+
+- Admin panel to accept / reject and manage user event requests and booking KPIs
+
+- User panel to manage event requests
 
 - (optional) Builders House members page, showing the registered members (with public profile) with their profile picture, name, company, role, and linkedin profile url
 
@@ -106,7 +108,7 @@ graph TD
     F --> Y[User registration details are used to create an account in Thia]
 ```
 
-### User booking flow
+### User space booking flow
 
 ```mermaid
 graph TD
