@@ -5,13 +5,10 @@
 
 ## Goal
 
-Create the digital identity for **Builders House** by *[How to Web](https://howtoweb.co/)* to showcase its story, enable event discovery, and streamline bookings, fostering a vibrant community of builders and startups.
-
+Create the digital identity for **Builders House**, by *[How to Web](https://howtoweb.co/)* to showcase its story, enable event discovery, and streamline bookings.
 
 ## Features
 - User account creation via Supabase auth (check [user account creation flow](#user-account-creation-flow))
-  - Required fields: first_name, last_name, email, password, linkedin_profile_url
-  - Optional fields: company_name, company_website_url, company_role, company_description
 
 - Event feed (check [Oveit API docs](./oveit-api-docs.md))
 
@@ -19,24 +16,29 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 
 - ***User-only*** access for space booking requests (check [booking flow](#user-booking-flow)) 
 
-- ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow)) 
+- ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow))
 
 - Event proposal requests form (all fields are required):
   - event_name
   - event_description
-  - event_date
-  - event_time
-  - event_banner (1200x600 pixels)
+  - event_date *(DD-MM-YYYY)*
+  - event_time *(HH:MM)*
+  - event_banner *(1200x600 pixels)*
   - organizer_name
   - organizer_email
   - organizer_phone
   - organizer_website_url
   - organizer_linkedin_profile_url
 
+- (optional) Builders House members page, showing the registered members (with public profile) with their profile picture, name, company, role, and linkedin profile url
+
 - (optional) Use Supabase email templates + SendGrid for custom marketing emails
 
 - (optional) Use Airtable for event proposal requests
 
+## Content guidelines
+
+- Use the following [guide](./landing-page-that-converts-docs.md) for the landing page copy.
 
 ## Tech Stack Requirements
 - Use the following [template](https://vercel.com/templates/authentication/supabase) to kickstart the project
@@ -65,14 +67,16 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 
 - Supabase for database ([docs](https://supabase.com/docs/guides/database/overview))
 
-- (optional) SendGrid for marketing emails ([docs](https://www.twilio.com/docs/sendgrid/for-developers/sending-email/quickstart-nodejs))
+- (optional) SendGrid for transactional and marketing emails ([docs](https://www.twilio.com/docs/sendgrid/for-developers/sending-email/quickstart-nodejs))
 
 - (optional) Supabase or S3 for asset storage
 
 ### Integrations
 - Pull events from Oveit API ([docs](https://l.oveit.com/api-documentation/events/))
 
-- Submit booking requests for desks and offices via [Thia.work](https://thia.work) booking API (URL/endpoints provided at the hackathon)
+- Submit booking requests for desks and offices through Thia's booking API ([docs]('./thia-api-docs.md))
+
+- Handle any possible errors from the integrations and display them to the user in a friendly way.
 
 - (optional) Submit event proposals via Airtable form
 
@@ -80,23 +84,32 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 
 ### User account creation flow
 
+Before creating an account, the user should first fill out the following form:
+
+- Required fields: first_name, last_name, email, password, linkedin_profile_url, public_profile (checkbox)
+- Optional fields: company_name, company_website_url, company_role, company_description, profile_picture (image), company_logo (image)
+
+Make sure to create a separate `users` table in Supabase and store the profile data in it.
+
+After filling out the form, the user flow is the following:
+
 ```mermaid
 graph TD
-    A[User registers via form and Supabase auth] --> B[Email verification link sent to user]
-    B --> C[User clicks verification link]
-    C --> D[User is redirected to login page]
-    D --> X[Registration details sent to Thia]
-    D --> E[User logs in]
-    E --> F[User is redirected to the landing page]
-    F --> G[User can now book spaces and submits event proposals]
-    E --> Y[App fetches and returns space details]
+    A[User creates account via Supabase auth] --> B[Email verification link is sent to user]
+    B --> C[User clicks verification link and is redirected to login page]
+    C --> D[User is redirected to the landing page and signs in]
+    D --> E[User is required to fill out the profile form]
+    E --> F[User submits profile form]
+    F --> G[User is redirected to the landing page]
+    G --> H[User can now book spaces and submit event proposals]
+    F --> X[User profile details are saved in a separate users table]
+    F --> Y[User registration details are used to create an account in Thia]
 ```
 
 ### User booking flow
 
 ```mermaid
 graph TD
-
     A[User views Builders House products: desks & meeting rooms] --> B[User selects a product]
     B --> C{Is user logged in?}
     C -->|No| X[Redirect to login/signup page]

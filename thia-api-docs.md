@@ -2,7 +2,7 @@
 
 ## Overview
 
-The Partner API allows partners to access and manage their space data programmatically. This API uses API key authentication and follows REST conventions.
+The Partner API allows partners to access and manage their space data programmatically. This API uses API key authentication and follows REST conventions. Endpoints request and response schemas are provided below, and the types are defined in [thia-api-types.ts](./thia-api-types.ts).
 
 ## Authentication
 
