@@ -8,7 +8,7 @@
 Create the digital identity for **Builders House** by *[How to Web](https://howtoweb.co/)* to showcase its story, enable event discovery, and streamline bookings, fostering a vibrant community of builders and startups.
 
 
-## Tech Stack Limits
+## Tech Stack Requirements
 
 ### Frontend
 - [Next.js](https://nextjs.org/docs) for landing page. You can use any of the following [templates](https://vercel.com/templates?database=supabase&auth=supabase-auth&framework=next.js) to start the project
@@ -25,30 +25,33 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 
 
 ### Backend
-- [Next.js API route handlers](https://nextjs.org/docs/app/getting-started/route-handlers-and-middleware)
+- Next.js API route handlers ([docs](https://nextjs.org/docs/app/getting-started/route-handlers-and-middleware))
 
-- [Supabase for auth](https://supabase.com/docs/guides/auth/quickstarts/nextjs)
+- Supabase for auth ([docs](https://supabase.com/docs/guides/auth/quickstarts/nextjs))
 
-- [Supabase for database](https://supabase.com/docs/guides/database/overview)
+- Supabase for database ([docs](https://supabase.com/docs/guides/database/overview))
+
+- (optional) SendGrid for marketing emails ([docs](https://www.twilio.com/docs/sendgrid/for-developers/sending-email/quickstart-nodejs))
 
 - (optional) Supabase or S3 for asset storage
-- (optional) [SendGrid](https://www.twilio.com/docs/sendgrid/for-developers/sending-email/quickstart-nodejs) for marketing emails
 
 ### Integrations
-- Pull events from [Oveit API](https://l.oveit.com/api-documentation/events/) or Supabase
+- Pull events from Oveit API ([docs](https://l.oveit.com/api-documentation/events/))
 
 - Submit booking requests for desks and offices via [Thia.work](https://thia.work) booking API (URL/endpoints provided at the hackathon)
 
-- (optional) Register for events via [Oveit API](https://l.oveit.com/api-documentation/attendees/) or Supabase
+- (optional) Submit event proposals via Airtable form
 
 ## Features
-- User account creation (via Supabase auth) (checking [user account creation flow](#user-account-creation-flow))
+- User account creation via Supabase auth (check [user account creation flow](#user-account-creation-flow))
 
-- Event feed (list of events)
+- Event feed (check [event registration flow])
 
-- ***User-only*** access for bookings and event creation requests (checking [booking flow](#user-booking-flow) and [event creation flow](#user-event-creation-flow)) 
+- ***User-only*** access for space booking requests (check [booking flow](#user-booking-flow)) 
 
-- Forms for event registration/creation requests and booking requests
+- ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow)) 
+
+- Forms for space booking requests
 
 - (optional) Use Supabase email templates + SendGrid for custom marketing emails
 
@@ -109,7 +112,7 @@ graph TD
     K --> L[User is redirected to wait for approval page]
 ```
 
-### User event flow
+### User event proposal flow
 
 ```mermaid
 graph TD
