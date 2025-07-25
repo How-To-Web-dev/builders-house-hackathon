@@ -8,10 +8,43 @@
 Create the digital identity for **Builders House** by *[How to Web](https://howtoweb.co/)* to showcase its story, enable event discovery, and streamline bookings, fostering a vibrant community of builders and startups.
 
 
+## Features
+- User account creation via Supabase auth (check [user account creation flow](#user-account-creation-flow))
+  - Required fields: first_name, last_name, email, password, linkedin_profile_url
+  - Optional fields: company_name, company_website_url, company_role, company_description
+
+- Event feed (check [Oveit API docs](./oveit-api-docs.md))
+
+- Event registration flow: user clicks on an event and is redirected to the following URL: `https://oveit.com/hub/org/jnR9vo3A`
+
+- ***User-only*** access for space booking requests (check [booking flow](#user-booking-flow)) 
+
+- ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow)) 
+
+- Event proposal requests form (all fields are required):
+  - event_name
+  - event_description
+  - event_date
+  - event_time
+  - event_banner (1200x600 pixels)
+  - organizer_name
+  - organizer_email
+  - organizer_phone
+  - organizer_website_url
+  - organizer_linkedin_profile_url
+
+- (optional) Use Supabase email templates + SendGrid for custom marketing emails
+
+- (optional) Use Airtable for event proposal requests
+
+
 ## Tech Stack Requirements
+- Use the following [template](https://vercel.com/templates/authentication/supabase) to kickstart the project
+
+- Make sure the have an account on Vercel and Supabase. Then you can Deploy the project on Vercel and connect it to your Supabase project.
 
 ### Frontend
-- [Next.js](https://nextjs.org/docs) for landing page. You can use any of the following [templates](https://vercel.com/templates?database=supabase&auth=supabase-auth&framework=next.js) to start the project
+- [Next.js](https://nextjs.org/docs) for landing page.
 
 - UI has to be [shadcn/ui](https://ui.shadcn.com) and [Tailwind CSS](https://tailwindcss.com/) compatible.
 
@@ -41,19 +74,6 @@ Create the digital identity for **Builders House** by *[How to Web](https://howt
 - Submit booking requests for desks and offices via [Thia.work](https://thia.work) booking API (URL/endpoints provided at the hackathon)
 
 - (optional) Submit event proposals via Airtable form
-
-## Features
-- User account creation via Supabase auth (check [user account creation flow](#user-account-creation-flow))
-
-- Event feed (check [event registration flow])
-
-- ***User-only*** access for space booking requests (check [booking flow](#user-booking-flow)) 
-
-- ***User-only*** access event proposal requests ([event proposal flow](#user-event-proposal-flow)) 
-
-- Forms for space booking requests
-
-- (optional) Use Supabase email templates + SendGrid for custom marketing emails
 
 ## User flows
 
@@ -93,23 +113,6 @@ graph TD
     O --> Q[Thia sends QR code email to user]
     P --> R[Thia sends rejection email to user]
 
-```
-
-### User event registration flow
-
-```mermaid
-graph TD
-    A[User views event feed] --> B[User clicks on an event]
-    B --> C{Is user logged in?}
-    C -->|No| X[Redirect to login/signup page]
-    X --> Y[User logs in or signs up]
-    Y --> Z[Redirect back to event feed]
-    C -->|Yes| G{Is event from Oveit?}
-    G -->|Yes| H[Redirect to Oveit registration form via link]
-    G -->|No| I[Navigate to registration form]
-    I --> J[User fills out registration form]
-    J --> K[User submits registration form]
-    K --> L[User is redirected to wait for approval page]
 ```
 
 ### User event proposal flow
