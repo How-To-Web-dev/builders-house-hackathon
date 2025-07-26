@@ -76,7 +76,7 @@ Create the digital identity for **Builders House**, by *[How to Web](https://how
 ### Integrations
 - Pull events from Oveit API ([docs](https://l.oveit.com/api-documentation/events/))
 
-- Submit booking requests for desks and offices through Thia's booking API ([docs]('./thia-api-docs.md))
+- Submit booking requests for desks and offices through Thia's booking API ([docs](./thia-api-docs.md))
 
 - Handle any possible errors from the integrations and display them to the user in a friendly way.
 
