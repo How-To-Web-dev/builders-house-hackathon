@@ -1,4 +1,4 @@
-# Partner API Documentation
+# THIA Partner API Documentation
 
 ## Overview
 
