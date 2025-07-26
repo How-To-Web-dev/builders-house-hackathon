@@ -4,13 +4,24 @@
 
 The Partner API allows partners to access and manage their space data programmatically. This API uses API key authentication and follows REST conventions. Endpoints request and response schemas are provided below, and the types are defined in [thia-api-types.ts](./thia-api-types.ts).
 
+
+## Base URL
+
+```
+# prod
+https://thia.work/api/v1/partner
+
+# staging
+https://thiadev.work/api/v1/partner
+```
+
 ## Authentication
 
 All API requests must include authentication headers:
 
 ```
 X-API-Key: your_api_key
-X-API-Secret: your_api_secret
+X-API-Secret: your_secret
 ```
 
 These credentials are unique to each space and can be found in your space settings.
@@ -39,16 +50,6 @@ These credentials are unique to each space and can be found in your space settin
     "error": "Access denied",
     "message": "This API is only available for partners"
 }
-```
-
-## Base URL
-
-```
-# prod
-https://thia.work/api/v1/partner
-
-# staging
-https://thiadev.work/api/v1/partner
 ```
 
 ## Endpoints
