@@ -905,6 +905,185 @@ GET /space/meeting-room-availability?date=2024-03-15&product_id=5
 - Time slots are returned in chronological order
 - Each slot represents a 1-hour booking window
 
+
+### Get Desk Availability
+
+Check desk availability for your space on a specific date, including detailed information about existing bookings and customers.
+
+**Endpoint:** `GET /space/desk-availability`
+
+**Headers:**
+```
+X-API-Key: your_api_key
+X-API-Secret: your_api_secret
+Content-Type: application/json
+```
+
+**Query Parameters:**
+
+| Parameter | Type | Required | Description |
+|-----------|------|----------|-------------|
+| `date` | string | Yes | Date in YYYY-MM-DD format (today or future dates only) |
+| `include_access_codes` | number | 1 | Include detailed access code and customer information (default: false) |
+
+**Example Request (Summary Only):**
+```
+GET /space/desk-availability?date=2024-03-20
+```
+
+**Example Request (With Access Codes):**
+```
+GET /space/desk-availability?date=2024-03-20&include_access_codes=1
+```
+
+**Response (Summary Only):** `200 OK`
+
+```json
+{
+    "total_existing_desks": 30,
+    "total_booked_desks": 15,
+    "available_desks": 15
+}
+```
+
+**Response (With Access Codes):** `200 OK`
+
+```json
+{
+    "total_existing_desks": 30,
+    "total_booked_desks": 15,
+    "available_desks": 15,
+    "access_codes": [
+        {
+            "id": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "customer_id": 123,
+            "customer_type": "user",
+            "space_id": 1,
+            "subscription_id": 89,
+            "valid_from": "2024-03-20T00:00:00.000000Z",
+            "valid_to": "2024-03-22T23:59:59.000000Z",
+            "is_primary": true,
+            "unique_scans": 5,
+            "total_scans": 12,
+            "status": "active",
+            "qr_code_download_url": "https://thia.work/qr-code/a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+            "customer": {
+                "id": 123,
+                "first_name": "John",
+                "last_name": "Doe",
+                "email": "john.doe@example.com",
+                "phone": "+40123456789"
+            },
+            "created_at": "2024-03-15T10:30:00.000000Z",
+            "updated_at": "2024-03-15T10:30:00.000000Z"
+        },
+        {
+            "id": "b2c3d4e5-f6g7-8901-bcde-f23456789012",
+            "customer_id": 124,
+            "customer_type": "user",
+            "space_id": 1,
+            "subscription_id": null,
+            "valid_from": "2024-03-15T00:00:00.000000Z",
+            "valid_to": "2024-03-25T23:59:59.000000Z",
+            "is_primary": true,
+            "unique_scans": 0,
+            "total_scans": 0,
+            "status": "inactive",
+            "qr_code_download_url": "https://thia.work/qr-code/b2c3d4e5-f6g7-8901-bcde-f23456789012",
+            "customer": {
+                "id": 124,
+                "first_name": "Jane",
+                "last_name": "Smith",
+                "email": "jane.smith@example.com",
+                "phone": null
+            },
+            "created_at": "2024-03-10T09:15:00.000000Z",
+            "updated_at": "2024-03-10T09:15:00.000000Z"
+        }
+    ]
+}
+```
+
+**Error Responses:**
+
+**400 Bad Request - Validation Error**
+```json
+{
+    "error": "The given data was invalid.",
+    "message": "The date field is required.",
+    "errors": {
+        "date": [
+            "The date field is required."
+        ]
+    }
+}
+```
+
+**400 Bad Request - Past Date**
+```json
+{
+    "error": "The given data was invalid.",
+    "message": "The date must be a date after or equal to 2024-03-15.",
+    "errors": {
+        "date": [
+            "The date must be a date after or equal to 2024-03-15."
+        ]
+    }
+}
+```
+
+**Desk Availability Field Descriptions:**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `total_existing_desks` | integer | Total number of desks available in the space (hot desks + dedicated desks) |
+| `total_booked_desks` | integer | Number of desks booked for the specified date |
+| `available_desks` | integer | Number of desks available for booking (total - booked) |
+| `access_codes` | array\|null | Array of access code objects for bookings on this date (only included when `include_access_codes=true`) |
+
+**Access Code Object (within access_codes array):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | string | Unique access code identifier (UUID) |
+| `customer_id` | integer | Customer user ID |
+| `customer_type` | string | Type of customer ("user" or "guest") |
+| `space_id` | integer | Space identifier |
+| `subscription_id` | integer\|null | Related subscription ID (null for standalone codes) |
+| `valid_from` | string | Access code validity start date/time (ISO 8601) |
+| `valid_to` | string | Access code validity end date/time (ISO 8601) |
+| `is_primary` | boolean | Whether this is the primary access code |
+| `unique_scans` | integer | Number of unique access scans |
+| `total_scans` | integer | Total number of access scans |
+| `status` | string | Current status (active, inactive, expired, canceled) |
+| `qr_code_download_url` | string | Direct download URL for the QR code PNG |
+| `customer` | object | Customer information object |
+| `created_at` | string | Creation timestamp (ISO 8601) |
+| `updated_at` | string | Last update timestamp (ISO 8601) |
+
+**Customer Object (within access code):**
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `id` | integer | Customer user ID |
+| `first_name` | string | Customer's first name |
+| `last_name` | string | Customer's last name |
+| `email` | string | Customer's email address |
+| `phone` | string\|null | Customer's phone number |
+
+**Note about Desk Availability:**
+- Total existing desks is calculated as the sum of `total_hot_desks` and `total_dedicated_desks` from the space configuration
+- Only access codes with "active" or "inactive" status are counted as booked desks
+- Expired and canceled access codes are not included in the booking count
+- Access codes are included if their validity period intersects with the requested date
+- The `available_desks` value will never be negative (minimum value is 0)
+- Past dates are not allowed - only today or future dates can be queried
+- The `access_codes` array is only included when `include_access_codes=true` is specified
+- When `include_access_codes=false` (default), only summary information is returned for better performance
+- Customer information is included for both User and Guest customer types when access codes are requested
+- Access code details follow the same format as other Partner API endpoints
+
+
 ### Access Codes
 
 #### Create Standalone Access Code
